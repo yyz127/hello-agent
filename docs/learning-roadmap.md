@@ -1,217 +1,287 @@
-# Agent 开发学习路线图（一个月）
+# 基于 Datawhale hello-agents 的一个月学习路线图
+
+> 参考教程：[datawhalechina/hello-agents](https://github.com/datawhalechina/hello-agents)
+> 在线阅读：https://datawhalechina.github.io/hello-agents/
+
+## 教程简介
+
+hello-agents 是 Datawhale 社区的开源智能体学习教程，共 **16 章**，分为 5 大部分：
+
+| 部分 | 章节 | 内容 |
+|------|------|------|
+| 第一部分：基础理论 | 第1-3章 | 智能体概念、发展史、LLM基础 |
+| 第二部分：实战开发 | 第4-7章 | 经典范式、低代码平台、框架开发、自建框架 |
+| 第三部分：高级技能 | 第8-12章 | 记忆系统、上下文工程、通信协议、模型训练、评估 |
+| 第四部分：综合项目 | 第13-15章 | 旅行助手、深度研究Agent、赛博小镇 |
+| 第五部分：毕业设计 | 第16章 | 综合设计 |
+
+---
 
 ## 前置准备（Day 0）
 
 ### 你需要准备的
 - Python 3.10+ 已安装
 - 一个代码编辑器（推荐 VS Code）
-- Anthropic API Key（从 https://console.anthropic.com 获取）
-- GitHub 账号（你已经有了）
+- OpenAI API Key（hello-agents 教程基于 OpenAI API）
+- GitHub 账号
 
 ### 环境搭建
 ```bash
-# 进入项目目录
+# 1. 克隆 hello-agents 教程仓库（作为参考资料）
+git clone https://github.com/datawhalechina/hello-agents.git ~/hello-agents-tutorial
+
+# 2. 进入你的练习项目
 cd hello-agent
 
-# 创建虚拟环境
+# 3. 创建虚拟环境
 python -m venv venv
 
-# 激活虚拟环境
+# 4. 激活虚拟环境
 # Windows:
 venv\Scripts\activate
 # Mac/Linux:
 source venv/bin/activate
 
-# 安装依赖
+# 5. 安装依赖
 pip install -r requirements.txt
+```
+
+### Git 基础操作速查
+```bash
+git status                    # 查看哪些文件被修改了
+git add 文件名                # 把修改的文件加入暂存区
+git add .                     # 把所有修改的文件加入暂存区
+git commit -m "说明做了什么"   # 提交修改（保存一个版本）
+git push                      # 推送到 GitHub
+git pull                      # 从 GitHub 拉取最新代码
+git log --oneline             # 查看提交历史
 ```
 
 ---
 
-## 第1周：Python基础 & API入门（Day 1-7）
+## 第1周：理论基础 + LLM 入门（Day 1-7）
+
+> 对应 hello-agents 第1-3章
 
 ### 学习目标
-- 理解 API 调用的基本概念
-- 学会使用 Claude API 发送请求和处理响应
-- 掌握 Python 函数、字典、列表等基础知识
+- 理解什么是智能体（Agent），它和普通聊天机器人有什么区别
+- 了解智能体的发展历史和不同类型
+- 掌握大语言模型（LLM）的基本使用方法
 
 ### 每日计划
 
-#### Day 1 - Hello API
-- **学习**: 什么是 API？什么是 LLM？
-- **练习**: `week1/01_hello_api.py` - 发送第一个 API 请求
-- **知识点**: API Key、HTTP 请求、JSON 格式
+#### Day 1 - 初识智能体（第1章）
+- **阅读**: hello-agents 第1章 - 智能体的定义与组成
+- **核心概念**:
+  - 什么是 Agent？→ 能感知环境、自主决策、执行行动的系统
+  - Agent 的核心组件：感知、规划、记忆、行动
+  - Agent vs 普通聊天机器人的区别
+- **练习**: `week1/01_hello_api.py` - 先学会调用 LLM API
 
-#### Day 2 - 理解消息格式
-- **学习**: Claude 消息格式（role、content）
-- **练习**: `week1/02_message_format.py` - 不同角色的消息
-- **知识点**: system/user/assistant 角色、消息列表
+#### Day 2 - 智能体发展史（第2章）
+- **阅读**: hello-agents 第2章
+- **核心概念**:
+  - 从规则系统 → 专家系统 → 强化学习 Agent → LLM Agent 的演变
+  - ReAct、CoT、Tool Use 等关键范式
+- **练习**: `week1/02_message_format.py` - 理解消息格式
 
-#### Day 3 - 参数调优
-- **学习**: temperature、max_tokens 等参数含义
-- **练习**: `week1/03_parameters.py` - 实验不同参数效果
-- **知识点**: 模型参数对输出的影响
+#### Day 3-4 - LLM 基础（第3章上）
+- **阅读**: hello-agents 第3章（前半部分）
+- **核心概念**:
+  - Transformer 架构基本理解（不需要数学细节）
+  - Token、上下文窗口、temperature 等核心概念
+  - Prompt Engineering 基础
+- **练习**: `week1/03_parameters.py` + `week1/05_prompt_engineering.py`
 
-#### Day 4 - 流式输出
-- **学习**: 什么是流式响应（Streaming）
-- **练习**: `week1/04_streaming.py` - 实现打字机效果
-- **知识点**: 流式 API、事件处理
+#### Day 5-6 - LLM 实践（第3章下）
+- **阅读**: hello-agents 第3章（后半部分）
+- **核心概念**:
+  - API 调用的完整流程
+  - 流式输出（Streaming）
+  - System Prompt 设计
+- **练习**: `week1/04_streaming.py` + `week1/project_translator.py`
 
-#### Day 5 - 提示词工程基础
-- **学习**: 如何写好 System Prompt
-- **练习**: `week1/05_prompt_engineering.py` - 不同提示词对比
-- **知识点**: 角色设定、输出格式控制、Few-shot
-
-#### Day 6-7 - 周末练习
-- **复习**: 回顾本周所有代码
-- **项目**: `week1/project_translator.py` - 做一个简单的翻译器
-- **扩展**: 尝试修改参数，观察不同结果
+#### Day 7 - 周日复习
+- 回顾第1-3章核心概念
+- 完成翻译器项目的扩展练习
+- **Git 练习**: 把本周代码提交并推送
 
 ---
 
-## 第2周：对话式 Agent（Day 8-14）
+## 第2周：Agent 经典范式 + 框架实践（Day 8-14）
+
+> 对应 hello-agents 第4-7章
 
 ### 学习目标
-- 理解多轮对话的实现原理
-- 学会管理对话历史（记忆）
-- 构建一个有个性的聊天 Agent
+- 理解 ReAct、CoT 等经典 Agent 范式
+- 学会使用主流 Agent 框架
+- 能从零构建一个简单的 Agent 框架
 
 ### 每日计划
 
-#### Day 8 - 多轮对话
-- **学习**: 对话上下文是如何维护的
-- **练习**: `week2/01_multi_turn.py` - 实现多轮对话
-- **知识点**: 消息列表的累积、上下文窗口
+#### Day 8-9 - 经典范式构建（第4章）
+- **阅读**: hello-agents 第4章
+- **核心概念**:
+  - ReAct 范式：推理（Reasoning）+ 行动（Acting）
+  - CoT（思维链）：让 Agent 一步步思考
+  - 工具调用（Tool Use）的基本原理
+- **练习**: `week2/01_react_pattern.py` - 实现简单的 ReAct 循环
+- **练习**: `week2/02_tool_use_basics.py` - 第一个工具调用
 
-#### Day 9 - 对话记忆管理
-- **学习**: 长对话的记忆策略
-- **练习**: `week2/02_memory.py` - 实现滑动窗口记忆
-- **知识点**: Token 限制、记忆截断策略
+#### Day 10 - 低代码平台体验（第5章）
+- **阅读**: hello-agents 第5章
+- **核心概念**:
+  - 了解 Coze、Dify 等低代码平台
+  - 理解可视化搭建 Agent 的思路
+- **动手**: 在 Coze 或 Dify 上搭建一个简单 Agent（可选）
+- **笔记**: `week2/03_notes_lowcode.md` - 记录体验和对比
 
-#### Day 10 - 对话保存与加载
-- **学习**: 文件读写（JSON）
-- **练习**: `week2/03_save_load.py` - 对话存档功能
-- **知识点**: JSON 序列化、文件操作
+#### Day 11-12 - 框架开发实践（第6章）
+- **阅读**: hello-agents 第6章
+- **核心概念**:
+  - 主流框架介绍（LangChain、AutoGen 等）
+  - 框架的核心抽象：Chain、Agent、Tool、Memory
+- **练习**: `week2/04_framework_practice.py` - 用框架构建 Agent
 
-#### Day 11 - 角色扮演 Agent
-- **学习**: 通过 System Prompt 定义 Agent 人格
-- **练习**: `week2/04_persona_agent.py` - 创建角色扮演Agent
-- **知识点**: 人格设计、行为约束
-
-#### Day 12 - 结构化输出
-- **学习**: 让 Agent 返回结构化数据
-- **练习**: `week2/05_structured_output.py` - JSON 模式输出
-- **知识点**: 输出解析、JSON Schema
-
-#### Day 13-14 - 周末项目
-- **项目**: `week2/project_tutor.py` - AI 学习助手
-- 功能：记住学习进度、个性化教学、保存笔记
+#### Day 13-14 - 构建你的 Agent 框架（第7章）
+- **阅读**: hello-agents 第7章（重点章节！）
+- **核心概念**:
+  - 自己动手设计 Agent 框架的架构
+  - 工具注册、消息管理、执行循环
+- **项目**: `week2/project_mini_framework.py` - 构建迷你 Agent 框架
+  - 实现工具注册机制
+  - 实现 Agent 主循环（感知→思考→行动）
+  - 实现简单的记忆管理
 
 ---
 
-## 第3周：工具调用 Agent（Day 15-21）
+## 第3周：高级技能（Day 15-21）
+
+> 对应 hello-agents 第8-12章
 
 ### 学习目标
-- 理解 Function Calling（工具调用）机制
-- 学会定义和实现自定义工具
-- 构建能"做事"的 Agent
+- 掌握 Agent 的记忆与检索系统
+- 理解上下文工程（Context Engineering）
+- 了解 Agent 通信协议和评估方法
 
 ### 每日计划
 
-#### Day 15 - 工具调用基础
-- **学习**: 什么是 Tool Use / Function Calling
-- **练习**: `week3/01_tool_basics.py` - 第一个工具调用
-- **知识点**: 工具定义格式、工具调用流程
+#### Day 15-16 - 记忆与检索（第8章）
+- **阅读**: hello-agents 第8章
+- **核心概念**:
+  - 短期记忆 vs 长期记忆
+  - 向量数据库与语义检索（RAG）
+  - 记忆的存储、检索和遗忘策略
+- **练习**: `week3/01_memory_system.py` - 实现记忆系统
+- **练习**: `week3/02_simple_rag.py` - 简单的 RAG 实现
 
-#### Day 16 - 计算器工具
-- **学习**: 多工具定义与选择
-- **练习**: `week3/02_calculator.py` - Agent + 计算器
-- **知识点**: 工具参数定义、结果返回
+#### Day 17 - 上下文工程（第9章）
+- **阅读**: hello-agents 第9章
+- **核心概念**:
+  - 如何管理有限的上下文窗口
+  - 信息压缩、摘要策略
+  - 动态上下文构建
+- **练习**: `week3/03_context_engineering.py`
 
-#### Day 17 - 文件操作工具
-- **学习**: Agent 操作本地文件
-- **练习**: `week3/03_file_tools.py` - 读写文件的Agent
-- **知识点**: 安全考虑、权限控制
+#### Day 18 - Agent 通信协议（第10章）
+- **阅读**: hello-agents 第10章
+- **核心概念**:
+  - MCP（Model Context Protocol）
+  - Agent 之间如何通信协作
+  - 标准化协议的意义
+- **练习**: `week3/04_agent_communication.py`
 
-#### Day 18 - 网络搜索工具
-- **学习**: Agent 调用外部 API
-- **练习**: `week3/04_web_tools.py` - 能搜索的Agent
-- **知识点**: API 集成、错误处理
+#### Day 19 - Agentic-RL 概览（第11章）
+- **阅读**: hello-agents 第11章
+- **核心概念**:
+  - 强化学习在 Agent 中的应用
+  - 奖励设计、策略优化
+- **笔记**: `week3/05_notes_agentic_rl.md` - 理论为主，记录理解
 
-#### Day 19 - 工具链与多步推理
-- **学习**: Agent 连续调用多个工具
-- **练习**: `week3/05_tool_chain.py` - 多步骤任务
-- **知识点**: Agent Loop、思维链
-
-#### Day 20-21 - 周末项目
-- **项目**: `week3/project_assistant.py` - 个人助理Agent
-- 功能：查天气、做计算、记笔记、管理待办
+#### Day 20-21 - Agent 评估（第12章）
+- **阅读**: hello-agents 第12章
+- **核心概念**:
+  - 如何评估 Agent 的性能
+  - 评估指标：准确性、效率、鲁棒性
+  - 基准测试（Benchmark）
+- **练习**: `week3/project_evaluation.py` - 为之前的 Agent 写评估
 
 ---
 
-## 第4周：综合实战（Day 22-30）
+## 第4周：综合项目实战（Day 22-30）
+
+> 对应 hello-agents 第13-16章
 
 ### 学习目标
-- 整合所有知识构建完整 Agent 系统
-- 学习错误处理和健壮性
-- 完成一个可展示的 Agent 项目
+- 完成 2-3 个完整的 Agent 项目
+- 整合前三周所有知识
+- 完成一个可展示的毕业设计
 
 ### 每日计划
 
-#### Day 22 - 错误处理
-- **学习**: API 错误、工具执行错误的处理
-- **练习**: `week4/01_error_handling.py`
-- **知识点**: try/except、重试机制、优雅降级
+#### Day 22-23 - 智能旅行助手（第13章）
+- **阅读**: hello-agents 第13章
+- **项目**: `week4/travel_assistant/`
+  - 接收旅行需求（目的地、天数、预算）
+  - 规划行程路线
+  - 推荐景点和餐厅
+  - 生成详细旅行计划
 
-#### Day 23 - Agent 架构设计
-- **学习**: Agent 的设计模式
-- **练习**: `week4/02_agent_class.py` - 面向对象的Agent
-- **知识点**: 类、继承、设计模式
-
-#### Day 24 - 多 Agent 协作
-- **学习**: 多个 Agent 分工合作
-- **练习**: `week4/03_multi_agent.py`
-- **知识点**: Agent 编排、任务分发
-
-#### Day 25 - Agent 评估
-- **学习**: 如何测试和评估 Agent
-- **练习**: `week4/04_evaluation.py`
-- **知识点**: 测试用例、评估指标
-
-#### Day 26-30 - 毕业项目
-- **项目**: `week4/final_project/` - 智能研究助手
-- 功能：
+#### Day 24-26 - 自动化深度研究 Agent（第14章）
+- **阅读**: hello-agents 第14章
+- **项目**: `week4/deep_research/`
   - 接收研究主题
+  - 分解研究问题
   - 搜索和收集信息
-  - 整理和总结内容
-  - 生成结构化报告
-  - 支持追问和深入研究
+  - 整理、分析和总结
+  - 生成结构化研究报告
+
+#### Day 27-28 - 赛博小镇（第15章）
+- **阅读**: hello-agents 第15章
+- **项目**: `week4/cyber_town/`（简化版）
+  - 多个 Agent 模拟小镇居民
+  - Agent 之间的对话和互动
+  - 观察涌现行为
+
+#### Day 29-30 - 毕业设计（第16章）
+- **阅读**: hello-agents 第16章
+- **项目**: `week4/final_project/` - 选择一个方向深入：
+  - 选项 A：增强版旅行助手（加入实时搜索、地图集成）
+  - 选项 B：个人知识库 Agent（RAG + 工具调用）
+  - 选项 C：自定义主题的 Agent（根据你的兴趣）
 
 ---
 
 ## 学习建议
 
 ### 每天的学习流程
-1. **阅读代码注释** - 每个文件都有详细的中文注释
-2. **运行示例** - 先运行看效果
-3. **修改实验** - 改参数、改提示词，观察变化
-4. **完成练习** - 每个文件末尾都有练习题
+1. **阅读教程章节** - 在 hello-agents 在线文档或 PDF 中阅读理论
+2. **看配套代码** - 参考 hello-agents 的 `code/` 目录
+3. **动手练习** - 在本项目中完成对应练习
+4. **修改实验** - 改参数、改提示词，观察变化
 5. **Git 提交** - 养成保存进度的习惯
 
-### 遇到问题怎么办
-- 代码报错 → 仔细阅读错误信息，大多数错误信息都说明了原因
-- 概念不懂 → 代码中有注释解释，也可以问 Claude
-- API 问题 → 检查 API Key 是否配置正确
+### 阅读顺序
+- 理论部分（第1-3章）可以快速阅读，重点理解概念
+- 实战部分（第4-7章）需要慢慢跟着代码做
+- 高级部分（第8-12章）选择性深入，不用每章都精通
+- 项目部分（第13-16章）重点动手，边做边学
 
-### Git 工作流（每天）
+### 遇到问题怎么办
+- **代码报错** → 仔细阅读错误信息，复制到搜索引擎查询
+- **概念不懂** → 回看 hello-agents 对应章节，或问 Claude
+- **API 问题** → 检查 API Key 和网络连接
+- **Git 问题** → 参考 README 中的 Git 速查表
+
+### 每周 Git 工作流
 ```bash
-# 开始学习前，拉取最新代码
+# 每天开始前
 git pull
 
-# 学习过程中，随时保存
+# 完成一个练习后
 git add .
-git commit -m "完成 Day X: 主题名称"
+git commit -m "完成 Day X: 练习名称"
 
-# 学习结束后，推送到远程
+# 每天结束时推送
 git push
 ```
